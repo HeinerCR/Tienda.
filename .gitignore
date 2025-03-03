@@ -32,3 +32,4 @@ build/
 ### VS Code ###
 .vscode/
 /src/main/resources/static/video/torpedo.mp4
+/src/main/resources/firebase/techshop-b2a42-firebase-adminsdk-fbsvc-b8b1131af5.json

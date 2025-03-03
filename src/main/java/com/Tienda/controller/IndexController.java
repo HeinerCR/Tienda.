@@ -15,7 +15,7 @@ public class IndexController {
         return "index";
     }
     
-    @RequestMapping("/contacto")
+    @RequestMapping("/informacion")
     public String contacto(Model model) {
         return "contacto";
     }
