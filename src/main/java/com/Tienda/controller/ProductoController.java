@@ -1,5 +1,6 @@
 package com.Tienda.controller;
 
+import com.Tienda.dao.ProductoDao;
 import com.Tienda.domain.Categoria;
 import com.Tienda.domain.Producto;
 import com.Tienda.service.CategoriaService;
@@ -20,42 +21,42 @@ import org.springframework.web.multipart.MultipartFile;
 @Slf4j
 @RequestMapping("/producto")
 public class ProductoController {
-    
+
     @Autowired
     private ProductoService productoService;
-    
+
     @Autowired
     private CategoriaService categoriaService;
-    
+
     @Autowired
     private FirebaseStorageServiceImpl firebaseStorageService;
 
     @GetMapping("/listado")
     public String inicio(Model model) {
-        List<Producto> productos = productoService.getProductos(false);
-        
+        List<Producto> productos = productoDAO.listarProductosOrdenadosPorExistencias();
+
         List<Categoria> listaCategoriasActivas = categoriaService.getCategorias(true);
-        
+
         model.addAttribute("productos", productos);
         model.addAttribute("totalProductos", productos.size());
         model.addAttribute("categorias", listaCategoriasActivas);
         return "/producto/listado";
     }
-    
+
     @GetMapping("/nuevo")
     public String productoNuevo(Producto producto) {
         return "/producto/modifica";
     }
-    
+
     @PostMapping("/guardar")
     public String productoGuardar(Producto producto,
-            @RequestParam("imagenFile") MultipartFile imagenFile) {        
+            @RequestParam("imagenFile") MultipartFile imagenFile) {
         if (!imagenFile.isEmpty()) {
             productoService.save(producto);
             producto.setRutaImagen(
                     firebaseStorageService.cargaImagen(
-                            imagenFile, 
-                            "producto", 
+                            imagenFile,
+                            "producto",
                             producto.getIdProducto()));
         }
         productoService.save(producto);
@@ -75,5 +76,20 @@ public class ProductoController {
         model.addAttribute("producto", producto);
         model.addAttribute("categorias", listaCategoriasActivas);
         return "/producto/modifica";
+    }
+
+    @Autowired
+    private ProductoDao productoDAO;
+
+    @GetMapping("/productos")
+    public String mostrarProductosOrdenados(Model model) {
+        // Obtén los productos ordenados por existencias
+        List<Producto> productosOrdenados = productoDAO.listarProductosOrdenadosPorExistencias();
+
+        // Pasa los productos al modelo para la vista
+        model.addAttribute("productos", productosOrdenados);
+
+        // Devuelve la vista con la lista de productos
+        return "productos";
     }
 }

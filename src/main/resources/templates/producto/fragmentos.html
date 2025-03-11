@@ -41,7 +41,7 @@
                                 <div class="mb-3">
                                     <label for="categoria.idCategoria">[[#{producto.categoria}]]</label>
                                     <select class="form-select" name="idCategoria">
-                                        <option th:each="c : ${cayegorias}"
+                                        <option th:each="c : ${categorias}"
                                                 thvalue="${c.idCategoria}">[[${c.descripcion}]]</option>
                                     </select>
                                 </div>
