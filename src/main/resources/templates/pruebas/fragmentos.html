@@ -153,6 +153,38 @@
                         </div>
                     </form>
                 </div>
+            </div>  
+        </section>
+        <!-- practica 4 -->
+        <section th:fragment="practica" class="bg-light">
+            <div class="row py-2">
+                <div class="col-md-1"></div>
+                <div class="col-md-3">
+                    <form method="POST" th:action="@{/pruebas/query4}" 
+                          class="was-validated">
+                        <div class="card">                            
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label for="existenciasInf">[[#{pruebas.existencias.inferior}]]</label>
+                                    <input type="number" class="form-control" 
+                                           th:value="${existenciasInf}"
+                                           th:name="existenciasInf" required="true"/>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="existenciasSup">[[#{pruebas.existencias.superior}]]</label>
+                                    <input type="number" class="form-control" 
+                                           th:value="${existenciasSup}"
+                                           th:name="existenciasSup" required="true"/>
+                                </div>
+                            </div>
+                            <div class="card-footer text-center">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-check"></i> [[#{existencias.ampliada}]]
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>   
             </div>
         </section> 
     </body>
