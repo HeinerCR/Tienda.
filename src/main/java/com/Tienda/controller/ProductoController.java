@@ -1,6 +1,5 @@
 package com.Tienda.controller;
 
-import com.Tienda.dao.ProductoDao;
 import com.Tienda.domain.Categoria;
 import com.Tienda.domain.Producto;
 import com.Tienda.service.CategoriaService;
@@ -33,8 +32,11 @@ public class ProductoController {
 
     @GetMapping("/listado")
     public String inicio(Model model) {
-        List<Producto> productos = productoDAO.listarProductosOrdenadosPorExistencias();
-
+        
+        List<Producto> productos = productoService.getProductos(false);
+     // List<Producto> productos = productoService.buscarPorExistencias(5);
+     // List<Producto> productos = productoService.buscarPorExistenciasYPrecio(5, 25000);
+        
         List<Categoria> listaCategoriasActivas = categoriaService.getCategorias(true);
 
         model.addAttribute("productos", productos);
@@ -76,20 +78,5 @@ public class ProductoController {
         model.addAttribute("producto", producto);
         model.addAttribute("categorias", listaCategoriasActivas);
         return "/producto/modifica";
-    }
-
-    @Autowired
-    private ProductoDao productoDAO;
-
-    @GetMapping("/productos")
-    public String mostrarProductosOrdenados(Model model) {
-        // Obtén los productos ordenados por existencias
-        List<Producto> productosOrdenados = productoDAO.listarProductosOrdenadosPorExistencias();
-
-        // Pasa los productos al modelo para la vista
-        model.addAttribute("productos", productosOrdenados);
-
-        // Devuelve la vista con la lista de productos
-        return "productos";
     }
 }
