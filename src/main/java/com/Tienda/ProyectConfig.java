@@ -8,11 +8,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -99,13 +96,13 @@ public class ProyectConfig implements WebMvcConfigurer {
         build.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder());
     }
 
-    @Bean
+@Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((request) -> request
-                .requestMatchers("/", "/index", "/errores/**", "/error",
-                        "/carrito/**", "/pruebas/**", "/reportes/**",
-                        "/registro/**", "/js/**", "/webjars/**", "/pruebas/listado3")
+                .requestMatchers("/", "/index", "/errores/**",
+                        "/carrito/**", "/reportes/**",
+                        "/registro/**", "/js/**", "/webjars/**", "/error", "/refrescarBoton")
                 .permitAll()
                 .requestMatchers(
                         "/producto/nuevo", "/producto/guardar",
@@ -114,13 +111,13 @@ public class ProyectConfig implements WebMvcConfigurer {
                         "/categoria/modificar/**", "/categoria/eliminar/**",
                         "/usuario/nuevo", "/usuario/guardar",
                         "/usuario/modificar/**", "/usuario/eliminar/**",
-                        "/reportes/**"
+                        "/reportes/**", "/pruebas/**"
                 ).hasRole("ADMIN")
                 .requestMatchers(
                         "/producto/listado",
                         "/categoria/listado",
                         "/usuario/listado"
-                ).hasRole("VENDEDOR")
+                ).hasAnyRole("ADMIN", "VENDEDOR")
                 .requestMatchers("/facturar/carrito")
                 .hasRole("USER")
                 )
@@ -129,5 +126,6 @@ public class ProyectConfig implements WebMvcConfigurer {
                 .logout((logout) -> logout.permitAll());
         return http.build();
     }
-
 }
+
+    
